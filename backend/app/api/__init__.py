@@ -17,8 +17,10 @@ from app.api.auth import auth_bp
 from app.api.posts import posts_bp
 from app.api.categories import categories_bp
 from app.api.tags import tags_bp
+from app.api.admin import admin_bp
 
 api_bp.register_blueprint(auth_bp, url_prefix='/auth')
 api_bp.register_blueprint(posts_bp, url_prefix='/posts')
 api_bp.register_blueprint(categories_bp, url_prefix='/categories')
 api_bp.register_blueprint(tags_bp, url_prefix='/tags')
+api_bp.register_blueprint(admin_bp, url_prefix='/admin')

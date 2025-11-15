@@ -504,6 +504,85 @@
 
 ---
 
+## Phase 8: 크롤링 스케줄러
+**완료 날짜**: 2025-11-15
+**소요 시간**: 약 2시간
+
+### 구현 내용
+- [x] APScheduler 통합
+- [x] 일일 2회 자동 Reddit 크롤링 (09:00, 21:00)
+- [x] 작업 실행 히스토리 관리 (최대 100개)
+- [x] 에러 처리 및 로깅
+- [x] 관리자 API (8개 엔드포인트)
+- [x] 작업 모니터링 및 제어
+- [x] 스케줄러 테스트 스크립트
+
+### 주요 코드 변경
+
+**Scheduler Service**:
+- `backend/app/services/scheduler.py` - 스케줄러 서비스 (450+ 줄)
+  * SchedulerService 클래스
+  * BackgroundScheduler 통합
+  * Reddit 수집 작업 (하루 2회: 09:00, 21:00)
+  * 작업 히스토리 관리 (메모리, 최대 100개)
+  * 이벤트 리스너 (성공/실패 추적)
+  * 작업 관리 메서드 (add, remove, pause, resume, run_now)
+  * get_scheduler() 글로벌 인스턴스
+
+**Admin API**:
+- `backend/app/api/admin.py` - 관리자 API (300+ 줄)
+  * GET /api/admin/scheduler/status - 스케줄러 상태
+  * GET /api/admin/scheduler/jobs - 작업 목록
+  * GET /api/admin/scheduler/jobs/{id} - 작업 상세
+  * POST /api/admin/scheduler/jobs/{id}/run - 즉시 실행
+  * POST /api/admin/scheduler/jobs/{id}/pause - 일시 정지
+  * POST /api/admin/scheduler/jobs/{id}/resume - 재개
+  * GET /api/admin/scheduler/history - 실행 히스토리
+  * POST /api/admin/crawler/collect-now - 크롤링 즉시 실행
+
+**Flask Integration**:
+- `backend/app/__init__.py` - 스케줄러 자동 초기화 (production only)
+- `backend/app/api/__init__.py` - admin_bp 등록 (업데이트)
+- `backend/app/services/__init__.py` - SchedulerService 추가 (업데이트)
+
+**Scripts**:
+- `backend/scripts/test_scheduler.py` - 스케줄러 테스트 (4가지 테스트)
+
+**Documentation**:
+- `docs/implementation/phase-08-implementation.md` - 상세 구현 문서
+
+### 배운 점
+- APScheduler로 간단한 스케줄링 구현 (Celery보다 가벼움)
+- Cron 트리거로 정확한 시간 스케줄링
+- Flask App Context 필요성 (백그라운드 작업에서 DB 접근)
+- 이벤트 리스너로 작업 성공/실패 추적
+- Production vs Development 모드별 기능 분리
+
+### 어려웠던 점 & 해결 방법
+- **문제**: Flask 개발 서버 재시작 시 스케줄러 중복 실행
+  - **해결**: DEBUG/TESTING 모드에서는 스케줄러 비활성화
+
+- **문제**: 백그라운드 작업에서 DB 접근 에러
+  - **해결**: Flask app context 사용 (`with app.app_context():`)
+
+- **문제**: 작업 히스토리를 어디에 저장할 것인가
+  - **해결**: 메모리 저장 (최대 100개), 중요 로그는 파일로
+
+### 다음 Phase 준비 사항
+- Phase 9+: 프론트엔드 개발 또는 고급 백엔드 기능
+  - React 컴포넌트 개발
+  - 관리자 대시보드
+  - 알림 시스템
+  - 분석 및 통계
+
+### 핵심 성과
+- **자동화**: 일일 2회 자동 Reddit 수집
+- **관리 편의성**: 8개 Admin API로 완전한 제어
+- **모니터링**: 실행 히스토리 및 통계
+- **경량**: APScheduler로 추가 인프라 없이 구현
+
+---
+
 ## Phase [번호]: [제목]
 **완료 날짜**: YYYY-MM-DD
 **소요 시간**: X시간/일
@@ -542,12 +621,13 @@
 | 5 | 로컬 LLM 환경 구축 (EEVE-Korean-10.8B) | 2025-11-15 | ✅ 완료 |
 | 6 | AI 재구성 엔진 - 프롬프트 설계 | 2025-11-15 | ✅ 완료 |
 | 7 | Reddit 영감 수집 시스템 | 2025-11-15 | ✅ 완료 |
+| 8 | 크롤링 스케줄러 | 2025-11-15 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 7 완료
+**Current Phase**: Phase 8 완료
 **목표 완료일**: 2025-11-15
 **진행률**: 100%
 

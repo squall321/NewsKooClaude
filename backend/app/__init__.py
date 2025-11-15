@@ -80,4 +80,10 @@ def create_app(config_name='development'):
         """서버 상태 체크 엔드포인트"""
         return {'status': 'healthy', 'service': 'NewsKoo API'}, 200
 
+    # Initialize scheduler (production only)
+    if not app.debug and not app.testing:
+        from app.services.scheduler import init_scheduler
+        init_scheduler(app)
+        app.logger.info('Scheduler initialized')
+
     return app
