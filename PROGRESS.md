@@ -71,6 +71,89 @@
 
 ---
 
+## Phase 2: 데이터베이스 설계 및 모델 정의
+**완료 날짜**: 2025-11-15
+**소요 시간**: 약 3-4시간
+
+### 구현 내용
+- [x] ERD (Entity Relationship Diagram) 설계
+- [x] BaseModel 및 TimestampMixin 생성
+- [x] User 모델 (비밀번호 해싱, 권한 관리)
+- [x] Category 모델 (slug 자동 생성)
+- [x] Tag 모델 (N:N 중간 테이블)
+- [x] Source 모델 (외부 소스 메타데이터)
+- [x] Inspiration 모델 (Fair Use 유사도 관리)
+- [x] WritingStyle 모델 (AI 프롬프트 템플릿)
+- [x] Draft 모델 (초안, 상태 관리)
+- [x] Post 모델 (발행된 게시물, slug 중복 방지)
+- [x] Seed 데이터 생성 스크립트
+- [x] 모델 테스트 작성 (20+ 테스트 케이스)
+
+### 주요 코드 변경
+
+**Models (8개 핵심 모델)**:
+- `backend/app/models/base.py` - BaseModel, TimestampMixin
+- `backend/app/models/user.py` - User (인증, 권한)
+- `backend/app/models/category.py` - Category
+- `backend/app/models/tag.py` - Tag, post_tags 중간 테이블
+- `backend/app/models/source.py` - Source (메타데이터만 저장)
+- `backend/app/models/inspiration.py` - Inspiration (재창작 아이디어)
+- `backend/app/models/writing_style.py` - WritingStyle (AI 프롬프트)
+- `backend/app/models/draft.py` - Draft (작성 중인 콘텐츠)
+- `backend/app/models/post.py` - Post (발행된 게시물)
+- `backend/app/models/__init__.py` - 모든 모델 export
+
+**Scripts & Tests**:
+- `backend/scripts/seed_data.py` - 개발용 초기 데이터 생성
+- `backend/tests/conftest.py` - pytest fixtures
+- `backend/tests/test_models.py` - 모델 단위 테스트
+
+**Documentation**:
+- `docs/DATABASE_ERD.md` - ERD 다이어그램 및 스키마 설계
+- `docs/implementation/phase-02-implementation.md` - 상세 구현 문서
+
+**Configuration**:
+- `backend/requirements.txt` - python-slugify, Werkzeug 추가
+- `backend/app/__init__.py` - models import 추가
+
+### 배운 점
+- SQLAlchemy relationship 설정 (`back_populates` vs `backref`)
+- Mixin 패턴으로 공통 기능 재사용
+- Slug 중복 방지 로직 (자동으로 -1, -2 추가)
+- Fair Use 준수를 위한 유사도 점수 관리
+- 상태 관리 (Enum 대신 문자열 + 메서드)
+- pytest fixtures로 테스트 데이터 관리
+
+### 어려웠던 점 & 해결 방법
+- **문제**: 모델 간 순환 참조 (circular import)
+  - **원인**: models/__init__.py에서 모든 모델 import 시 순환 참조 발생
+  - **해결**: 지연 import 사용 또는 관계 설정 시 문자열로 모델명 지정
+
+- **문제**: Post-Tag N:N 관계 설정
+  - **해결**: `db.Table`로 중간 테이블 정의 후 `secondary` 파라미터 사용
+
+- **문제**: Slug 중복 방지
+  - **해결**: `_generate_unique_slug()` 클래스 메서드로 중복 체크 및 카운터 추가
+
+### 다음 Phase 준비 사항
+- Phase 3: Flask API 기본 구조
+  - Flask-Migrate 초기화 및 Migration 생성
+  - REST API 엔드포인트 구현 (CRUD)
+  - Request/Response 검증
+  - 에러 핸들링
+  - API 문서화
+
+### 데이터베이스 설계
+- **모델 수**: 8개 (User, Post, Draft, Category, Tag, Source, Inspiration, WritingStyle)
+- **관계**:
+  - 1:N - User→Post, User→Draft, Category→Post, Source→Inspiration, WritingStyle→Draft
+  - 1:1 - Inspiration↔Draft, Draft↔Post
+  - N:N - Post↔Tag (중간 테이블: post_tags)
+- **Fair Use 준수**: Source는 메타데이터만 저장, Inspiration에서 유사도 관리
+- **워크플로우**: Source → Inspiration → Draft → Post
+
+---
+
 ## Phase [번호]: [제목]
 **완료 날짜**: YYYY-MM-DD
 **소요 시간**: X시간/일
@@ -103,14 +186,15 @@
 | Phase | 제목 | 완료일 | 상태 |
 |-------|------|--------|------|
 | 1 | 프로젝트 구조 및 개발 환경 설정 | 2025-11-15 | ✅ 완료 |
+| 2 | 데이터베이스 설계 및 모델 정의 | 2025-11-15 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 1 (Testing)
+**Current Phase**: Phase 2 완료
 **목표 완료일**: 2025-11-15
-**진행률**: 90%
+**진행률**: 100%
 
 ---
 

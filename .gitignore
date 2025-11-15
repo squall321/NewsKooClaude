@@ -67,8 +67,10 @@ htmlcov/
 # LLM Models (로컬에만 저장)
 *.bin
 *.safetensors
-models/
-checkpoints/
+/models/
+/checkpoints/
+backend/models/
+backend/checkpoints/
 
 # Temporary files
 *.tmp
