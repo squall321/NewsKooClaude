@@ -432,6 +432,78 @@
 
 ---
 
+## Phase 7: Reddit 영감 수집 시스템
+**완료 날짜**: 2025-11-15
+**소요 시간**: 약 2-3시간
+
+### 구현 내용
+- [x] PRAW 기반 Reddit 크롤러 구현
+- [x] 메타데이터만 수집 (Fair Use 준수)
+- [x] 인기도 필터링 (100+ upvotes, 10+ comments)
+- [x] 중복 체크 로직
+- [x] Source 및 Inspiration 자동 생성
+- [x] 배치 수집 지원 (여러 subreddit)
+- [x] 수집 통계 조회
+- [x] Reddit API 테스트 스크립트
+
+### 주요 코드 변경
+
+**Reddit Crawler**:
+- `backend/app/services/reddit_crawler.py` - Reddit 크롤러 서비스 (400+ 줄)
+  * RedditCrawler 클래스
+  * 8개 기본 타겟 subreddit (funny, jokes, dadjokes 등)
+  * `fetch_hot_posts()` - 인기 게시물 가져오기
+  * `save_to_database()` - Source/Inspiration 저장
+  * `collect_from_subreddits()` - 배치 수집
+  * `get_statistics()` - 수집 통계
+  * RedditPostMetadata 데이터 클래스
+
+**Fair Use 준수**:
+- 전문 텍스트 저장 안함 (메타데이터만)
+- 컨셉 요약 (제목 + 200자 미리보기)
+- 인기도 필터링 (공공 관심사)
+
+**Scripts**:
+- `backend/scripts/test_reddit_api.py` - Reddit API 테스트 (6가지 테스트)
+
+**Service Package**:
+- `backend/app/services/__init__.py` - RedditCrawler 추가 (업데이트)
+
+**Documentation**:
+- `docs/implementation/phase-07-implementation.md` - 상세 구현 문서
+
+### 배운 점
+- PRAW로 Reddit API 쉽게 사용 (read-only 접근)
+- Fair Use 실무: 메타데이터만 수집하여 법적 리스크 최소화
+- Reddit API Rate Limiting 자동 처리
+- 유니크 키 (platform + source_id) 조합으로 중복 체크
+- 컨셉 요약: LLM 없이도 충분한 정보 추출
+
+### 어려웠던 점 & 해결 방법
+- **문제**: Fair Use를 어느 정도까지 허용할 것인가
+  - **해결**: 메타데이터만 저장, 전문 텍스트는 200자 미리보기만 (저장 안함)
+
+- **문제**: 어떤 subreddit을 타겟으로 할 것인가
+  - **해결**: 영어권 대형 유머 subreddit 8개 선정 (수백만 구독자)
+
+- **문제**: 품질 낮은 게시물까지 수집되는 문제
+  - **해결**: 인기도 필터링 (최소 100 upvotes, 10 comments)
+
+### 다음 Phase 준비 사항
+- Phase 8: 스케줄링 및 자동화
+  - APScheduler로 정기 수집
+  - Celery 백그라운드 작업
+  - 수집 결과 알림
+  - 에러 복구 및 재시도
+
+### 핵심 성과
+- **8개 타겟 subreddit**: 다양한 유머 스타일
+- **Fair Use 준수**: 원본 대비 < 5% 저장
+- **자동 Inspiration 생성**: 수집 즉시 재창작 준비
+- **중복 방지**: platform + source_id 유니크 키
+
+---
+
 ## Phase [번호]: [제목]
 **완료 날짜**: YYYY-MM-DD
 **소요 시간**: X시간/일
@@ -469,12 +541,13 @@
 | 4 | JWT 인증 시스템 | 2025-11-15 | ✅ 완료 |
 | 5 | 로컬 LLM 환경 구축 (EEVE-Korean-10.8B) | 2025-11-15 | ✅ 완료 |
 | 6 | AI 재구성 엔진 - 프롬프트 설계 | 2025-11-15 | ✅ 완료 |
+| 7 | Reddit 영감 수집 시스템 | 2025-11-15 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 6 완료
+**Current Phase**: Phase 7 완료
 **목표 완료일**: 2025-11-15
 **진행률**: 100%
 
