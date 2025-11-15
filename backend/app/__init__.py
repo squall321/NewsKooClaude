@@ -47,6 +47,29 @@ def create_app(config_name='development'):
     with app.app_context():
         from app import models
 
+    # Register error handlers
+    from app.utils.errors import register_error_handlers
+    register_error_handlers(app)
+
+    # Configure logging
+    if not app.debug and not app.testing:
+        import logging
+        from logging.handlers import RotatingFileHandler
+        import os
+
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+
+        file_handler = RotatingFileHandler('logs/newskoo.log', maxBytes=10240000, backupCount=10)
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+        ))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('NewsKoo startup')
+
     # Register blueprints
     from app.api import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')

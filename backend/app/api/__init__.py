@@ -6,10 +6,17 @@ from flask import Blueprint
 
 api_bp = Blueprint('api', __name__)
 
-# Import routes (나중에 추가될 예정)
-# from app.api import auth, posts, admin
-
+# Health check
 @api_bp.route('/ping')
 def ping():
     """API 연결 테스트 엔드포인트"""
     return {'message': 'pong', 'version': '1.0.0'}, 200
+
+# Import and register sub-blueprints
+from app.api.posts import posts_bp
+from app.api.categories import categories_bp
+from app.api.tags import tags_bp
+
+api_bp.register_blueprint(posts_bp, url_prefix='/posts')
+api_bp.register_blueprint(categories_bp, url_prefix='/categories')
+api_bp.register_blueprint(tags_bp, url_prefix='/tags')
