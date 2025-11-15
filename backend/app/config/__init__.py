@@ -31,10 +31,18 @@ class Settings(BaseSettings):
     UPLOAD_FOLDER: Path = Path(__file__).parent.parent.parent / 'uploads'
     MAX_CONTENT_LENGTH: int = 16 * 1024 * 1024  # 16MB
 
-    # LLM
+    # LLM (Local EEVE-Korean-10.8B on RTX 5070 TI)
     LLM_MODEL_NAME: str = 'yanolja/EEVE-Korean-10.8B-v1.0'
-    LLM_DEVICE: str = 'cuda'
-    LLM_MAX_LENGTH: int = 2048
+    LLM_DEVICE: str = 'cuda'  # 'cuda' or 'cpu'
+    LLM_LOAD_IN_8BIT: bool = True  # INT8 quantization for VRAM savings
+    LLM_USE_FLASH_ATTENTION: bool = True  # Flash Attention 2 for speed
+    LLM_MAX_INPUT_LENGTH: int = 2048  # Max input tokens
+    LLM_MAX_NEW_TOKENS: int = 512  # Max generated tokens
+    LLM_TEMPERATURE: float = 0.8  # Sampling temperature (0.0-2.0)
+    LLM_TOP_P: float = 0.92  # Nucleus sampling
+    LLM_TOP_K: int = 50  # Top-K sampling
+    LLM_REPETITION_PENALTY: float = 1.15  # Repetition penalty
+    LLM_CACHE_DIR: str = os.getenv('LLM_CACHE_DIR', '')  # Custom cache dir (optional)
 
     # Reddit API (선택적 - 메타데이터만 크롤링)
     REDDIT_CLIENT_ID: str = os.getenv('REDDIT_CLIENT_ID', '')
