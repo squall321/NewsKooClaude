@@ -7,6 +7,7 @@ from .content_generator import ContentGenerator
 from .similarity_checker import SimilarityChecker
 from .reddit_crawler import RedditCrawler
 from .scheduler import SchedulerService, get_scheduler, init_scheduler
+from .image_processor import ImageProcessor
 
 __all__ = [
     'ContentGenerator',
@@ -14,5 +15,6 @@ __all__ = [
     'RedditCrawler',
     'SchedulerService',
     'get_scheduler',
-    'init_scheduler'
+    'init_scheduler',
+    'ImageProcessor'
 ]

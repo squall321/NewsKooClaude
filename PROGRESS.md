@@ -583,30 +583,85 @@
 
 ---
 
-## Phase [번호]: [제목]
-**완료 날짜**: YYYY-MM-DD
-**소요 시간**: X시간/일
+## Phase 9: 수동 작성 우선 시스템
+**완료 날짜**: 2025-11-15
+**소요 시간**: 약 2시간
 
 ### 구현 내용
-- [ ] 체크리스트 항목 1
-- [ ] 체크리스트 항목 2
+- [x] Draft CRUD API (10개 엔드포인트)
+- [x] 이미지 업로드 및 처리 서비스
+- [x] 마크다운 콘텐츠 지원
+- [x] 자동 저장 기능
+- [x] 발행/예약 워크플로우
+- [x] 권한 기반 접근 제어
+- [x] 페이지네이션 및 필터링
+- [x] 테스트 스크립트
 
 ### 주요 코드 변경
-```
-파일 경로: 변경 내용 요약
-```
+
+**Draft API (10개 엔드포인트)**:
+- `backend/app/api/drafts.py` - Draft API 구현 (524줄)
+  * GET /api/drafts - 목록 조회 (페이지네이션, 필터링)
+  * GET /api/drafts/{id} - 상세 조회
+  * POST /api/drafts - Draft 생성
+  * PUT /api/drafts/{id} - Draft 수정
+  * DELETE /api/drafts/{id} - Draft 삭제
+  * POST /api/drafts/{id}/publish - Post로 발행
+  * POST /api/drafts/{id}/autosave - 자동 저장
+  * POST /api/drafts/{id}/images - 이미지 업로드
+  * DELETE /api/drafts/{id}/images/{filename} - 이미지 삭제
+  * GET /api/drafts/images/{filename} - 이미지 정보 조회
+
+**Image Processing Service**:
+- `backend/app/services/image_processor.py` - 이미지 처리 서비스 (390줄)
+  * ImageProcessor 클래스
+  * 이미지 업로드, 검증, 리사이징, 최적화
+  * 썸네일 생성 (400x400, 정사각형)
+  * 지원 형식: PNG, JPG, JPEG, GIF, WEBP
+  * 최대 크기: 2000x2000px, 16MB
+
+**Blueprint 등록**:
+- `backend/app/api/__init__.py` - drafts_bp 등록
+- `backend/app/services/__init__.py` - ImageProcessor 추가
+
+**Scripts**:
+- `backend/scripts/test_drafts.py` - Draft API 테스트 (8가지 시나리오)
+
+**Documentation**:
+- `docs/implementation/phase-09-implementation.md` - 상세 구현 문서
 
 ### 배운 점
--
+- Flask multipart/form-data 파일 업로드 처리
+- PIL/Pillow를 사용한 이미지 처리 및 최적화
+- 자동 저장 vs 수동 저장 분리 (검증 유무)
+- Draft-Post 발행 워크플로우
+- 권한 기반 접근 제어 (User/Editor/Admin)
+- 썸네일 생성 및 정사각형 크롭 알고리즘
 
 ### 어려웠던 점 & 해결 방법
--
+- **문제**: 이미지 업로드 시 파일명 안전성
+  - **해결**: secure_filename() + UUID + timestamp 조합으로 고유 파일명 생성
+
+- **문제**: RGBA 이미지의 JPEG 변환 문제
+  - **해결**: 투명 배경을 흰색으로 변환 후 RGB 모드로 저장
+
+- **문제**: 자동 저장 시 검증 실패로 UX 저하
+  - **해결**: autosave 엔드포인트는 검증 생략, 즉시 저장
 
 ### 다음 Phase 준비 사항
--
+- Phase 10+: 프론트엔드 개발
+  - React 마크다운 에디터 통합
+  - Draft 관리 UI
+  - 이미지 드래그 앤 드롭
+  - 실시간 미리보기
+  - 발행 예약 UI
 
-### 스크린샷 (선택)
-<!-- 필요시 스크린샷 추가 -->
+### 핵심 성과
+- **10개 Draft API 엔드포인트**: 완전한 Draft 관리 기능
+- **이미지 처리**: 업로드, 리사이징, 최적화, 썸네일 자동 생성
+- **자동 저장**: 사용자 경험 최적화 (검증 없이 즉시 저장)
+- **발행 워크플로우**: Draft → Post 변환 및 상태 관리
+- **Fair Use 이미지**: 최적화로 용량 절감
 
 ---
 
@@ -622,12 +677,13 @@
 | 6 | AI 재구성 엔진 - 프롬프트 설계 | 2025-11-15 | ✅ 완료 |
 | 7 | Reddit 영감 수집 시스템 | 2025-11-15 | ✅ 완료 |
 | 8 | 크롤링 스케줄러 | 2025-11-15 | ✅ 완료 |
+| 9 | 수동 작성 우선 시스템 | 2025-11-15 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 8 완료
+**Current Phase**: Phase 9 완료
 **목표 완료일**: 2025-11-15
 **진행률**: 100%
 
