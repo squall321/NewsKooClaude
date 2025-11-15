@@ -220,6 +220,70 @@
 
 ---
 
+## Phase 4: JWT 인증 시스템
+**완료 날짜**: 2025-11-15
+**소요 시간**: 약 2시간
+
+### 구현 내용
+- [x] Auth API 구현 (6개 엔드포인트)
+- [x] 사용자 등록 (관리자 전용)
+- [x] 로그인 및 JWT 토큰 발급
+- [x] Refresh Token으로 Access Token 갱신
+- [x] 현재 사용자 조회
+- [x] 로그아웃
+- [x] 비밀번호 변경
+- [x] 인증 테스트 (20+ 케이스)
+
+### 주요 코드 변경
+
+**Auth API (6개 엔드포인트)**:
+- `backend/app/api/auth.py` - Auth API 구현
+  * POST /api/auth/register - 사용자 등록 (Admin)
+  * POST /api/auth/login - 로그인 및 토큰 발급
+  * POST /api/auth/refresh - 토큰 갱신
+  * GET /api/auth/me - 현재 사용자 조회
+  * POST /api/auth/logout - 로그아웃
+  * POST /api/auth/change-password - 비밀번호 변경
+
+**Blueprint 등록**:
+- `backend/app/api/__init__.py` - auth_bp 등록
+
+**Tests**:
+- `backend/tests/test_auth.py` - 인증 테스트 (20+ 케이스)
+
+**Documentation**:
+- `docs/implementation/phase-04-implementation.md` - 상세 구현 문서
+
+### 배운 점
+- Flask-JWT-Extended를 사용한 JWT 토큰 생성 및 검증
+- Refresh Token 패턴으로 Access Token 갱신 메커니즘 구현
+- 데코레이터 체이닝 (@jwt_required + @admin_required)
+- Werkzeug의 password hashing (User 모델에 이미 구현됨)
+- JWT 토큰 타입 구분 (Access vs Refresh)
+
+### 어려웠던 점 & 해결 방법
+- **문제**: JWT Refresh Token과 Access Token 구분
+  - **해결**: `@jwt_required(refresh=True)` 파라미터로 Refresh Token 엔드포인트 구분
+
+- **문제**: 비밀번호 검증 시점
+  - **해결**: 로그인 시 check_password() 메서드로 검증, 비밀번호 변경 시에도 현재 비밀번호 확인
+
+### 다음 Phase 준비 사항
+- Phase 5: 로컬 LLM 설정
+  - CUDA 및 PyTorch 설치 (RTX 5070 TI용)
+  - EEVE-Korean-10.8B 모델 다운로드
+  - INT8 양자화 설정
+  - LLM 서비스 클래스 구현
+
+### 인증 시스템
+- **JWT 라이브러리**: Flask-JWT-Extended
+- **Access Token 만료**: 1시간
+- **Refresh Token 만료**: 30일 (기본값)
+- **비밀번호 해싱**: Werkzeug
+- **권한 레벨**: Public, JWT, Editor, Admin
+
+---
+
 ## Phase [번호]: [제목]
 **완료 날짜**: YYYY-MM-DD
 **소요 시간**: X시간/일
@@ -254,12 +318,13 @@
 | 1 | 프로젝트 구조 및 개발 환경 설정 | 2025-11-15 | ✅ 완료 |
 | 2 | 데이터베이스 설계 및 모델 정의 | 2025-11-15 | ✅ 완료 |
 | 3 | Flask API 기본 구조 | 2025-11-15 | ✅ 완료 |
+| 4 | JWT 인증 시스템 | 2025-11-15 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 3 완료
+**Current Phase**: Phase 4 완료
 **목표 완료일**: 2025-11-15
 **진행률**: 100%
 
