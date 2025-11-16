@@ -6,6 +6,7 @@ Flask-Migrate==4.0.5
 Flask-JWT-Extended==4.6.0
 Flask-Caching==2.1.0
 Flask-Compress==1.14
+Flask-SocketIO==5.3.5
 
 # Database
 SQLAlchemy==2.0.23
@@ -53,3 +54,8 @@ mypy==1.7.1
 # Optional
 redis==5.0.1
 celery==5.3.4
+
+# Real-time
+python-socketio==5.10.0
+gevent==23.9.1
+gevent-websocket==0.10.1

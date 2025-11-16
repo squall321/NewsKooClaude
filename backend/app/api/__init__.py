@@ -25,6 +25,9 @@ from app.api.sources import sources_bp
 from app.api.writing_styles import writing_styles_bp
 from app.api.analytics import analytics_bp
 from app.api.users import users_bp
+from app.api.search import search_bp
+from app.api.tracking import tracking_bp
+from app.api.ab_test import ab_test_bp
 
 api_bp.register_blueprint(auth_bp, url_prefix='/auth')
 api_bp.register_blueprint(posts_bp, url_prefix='/posts')
@@ -38,3 +41,6 @@ api_bp.register_blueprint(sources_bp, url_prefix='/sources')
 api_bp.register_blueprint(writing_styles_bp, url_prefix='/writing-styles')
 api_bp.register_blueprint(analytics_bp, url_prefix='/analytics')
 api_bp.register_blueprint(users_bp, url_prefix='/users')
+api_bp.register_blueprint(search_bp, url_prefix='/search')
+api_bp.register_blueprint(tracking_bp, url_prefix='/tracking')
+api_bp.register_blueprint(ab_test_bp, url_prefix='/ab-test')

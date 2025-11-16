@@ -22,10 +22,15 @@ def make_shell_context():
 
 
 if __name__ == '__main__':
-    # 개발 서버 실행
+    # 개발 서버 실행 (SocketIO 사용)
     port = int(os.getenv('PORT', 5000))
-    app.run(
+
+    # SocketIO로 실행
+    socketio = app.socketio
+    socketio.run(
+        app,
         host='0.0.0.0',
         port=port,
-        debug=app.config['DEBUG']
+        debug=app.config['DEBUG'],
+        allow_unsafe_werkzeug=True  # 개발용
     )

@@ -49,6 +49,11 @@ def create_app(config_name='development'):
     # Initialize compression
     compress.init_app(app)
 
+    # Initialize WebSocket
+    from app.websocket import init_socketio
+    socketio = init_socketio(app)
+    app.socketio = socketio
+
     # CORS 설정
     CORS(app, resources={
         r"/api/*": {
