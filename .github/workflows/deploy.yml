@@ -1,0 +1,79 @@
+name: CD - Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} << 'ENDSSH'
+            # Navigate to project directory
+            cd ~/projects/NewsKooClaude
+
+            # Pull latest changes
+            git pull origin main
+
+            # Stop existing containers
+            docker compose down
+
+            # Pull latest images and rebuild
+            docker compose build --no-cache
+
+            # Start containers
+            docker compose up -d
+
+            # Wait for services to be healthy
+            sleep 10
+
+            # Check health
+            docker compose ps
+
+            # Prune old images
+            docker image prune -f
+          ENDSSH
+
+      - name: Health check
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          sleep 5
+          curl -f https://${{ secrets.DOMAIN_NAME }}/health || exit 1
+
+      - name: Notify deployment
+        if: success()
+        run: echo "Deployment successful!"
+
+      - name: Rollback on failure
+        if: failure()
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh ${SERVER_USER}@${SERVER_IP} << 'ENDSSH'
+            cd ~/projects/NewsKooClaude
+            git reset --hard HEAD~1
+            docker compose down
+            docker compose up -d
+          ENDSSH

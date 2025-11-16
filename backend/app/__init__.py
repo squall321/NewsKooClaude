@@ -88,8 +88,10 @@ def create_app(config_name='development'):
     # Register blueprints
     from app.api import api_bp
     from app.api.seo import seo_bp
+    from app.api.upload import upload_bp
     app.register_blueprint(api_bp, url_prefix='/api')
     app.register_blueprint(seo_bp)  # SEO endpoints at root level
+    app.register_blueprint(upload_bp)  # Upload endpoints
 
     # Health check endpoint
     @app.route('/health')
