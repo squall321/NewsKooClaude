@@ -196,3 +196,64 @@
     @apply bg-gray-800 border-gray-700 text-gray-100;
   }
 }
+
+/* Mobile touch optimization */
+@layer base {
+  /* Enable smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Optimize tap highlights */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* Better touch targets (minimum 44x44px) */
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    @apply inline-flex items-center justify-center;
+  }
+
+  /* Prevent text selection on touch */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Smooth momentum scrolling for iOS */
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Remove button outline on touch */
+  button:focus {
+    outline: none;
+  }
+
+  /* Improve image rendering on mobile */
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+}
+
+/* Pull-to-refresh optimization */
+@layer utilities {
+  .overscroll-none {
+    overscroll-behavior: none;
+  }
+
+  .overscroll-contain {
+    overscroll-behavior: contain;
+  }
+}

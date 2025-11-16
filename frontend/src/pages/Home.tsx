@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { usePosts } from '../hooks/usePosts';
 import PostCard from '../components/post/PostCard';
 import { SkeletonPostCard } from '../components/common/Skeleton';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import Button from '../components/common/Button';
+import { staggerContainer, fadeInUp } from '../lib/animations';
 
 type SortOption = 'latest' | 'popular' | 'trending';
 
@@ -57,14 +59,19 @@ const Home: React.FC = () => {
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
-        <div className="container-custom">
+        <motion.div
+          className="container-custom"
+          initial="initial"
+          animate="animate"
+          variants={fadeInUp}
+        >
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
             전 세계의 유머, 한국식으로 😄
           </h1>
           <p className="text-xl text-primary-100 max-w-2xl">
             Reddit, Twitter의 재미있는 이야기를 AI가 한국 문화에 맞게 재해석합니다
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Posts Grid */}
@@ -106,7 +113,12 @@ const Home: React.FC = () => {
         </div>
 
         {/* Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
           {data?.data.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
@@ -116,7 +128,7 @@ const Home: React.FC = () => {
             Array.from({ length: 6 }).map((_, index) => (
               <SkeletonPostCard key={`skeleton-${index}`} />
             ))}
-        </div>
+        </motion.div>
 
         {/* No Posts */}
         {!isLoading && data?.data.length === 0 && (

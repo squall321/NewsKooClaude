@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Post } from '../../types';
 import Card from '../common/Card';
 import Badge from '../common/Badge';
+import { staggerItem, imageFadeIn } from '../../lib/animations';
 
 interface PostCardProps {
   post: Post;
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -22,19 +25,24 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   };
 
   return (
-    <Card hoverable className="group">
-      <Link to={`/post/${post.slug}`} className="block">
-        {/* Featured Image */}
-        {post.featured_image && (
-          <div className="relative overflow-hidden rounded-lg mb-4 aspect-video bg-gray-100">
-            <img
-              src={post.featured_image}
-              alt={post.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-            />
-          </div>
-        )}
+    <motion.div variants={staggerItem}>
+      <Card hoverable className="group">
+        <Link to={`/post/${post.slug}`} className="block">
+          {/* Featured Image */}
+          {post.featured_image && (
+            <div className="relative overflow-hidden rounded-lg mb-4 aspect-video bg-gray-100">
+              <motion.img
+                src={post.featured_image}
+                alt={post.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+                initial="initial"
+                animate={imageLoaded ? 'animate' : 'initial'}
+                variants={imageFadeIn}
+                onLoad={() => setImageLoaded(true)}
+              />
+            </div>
+          )}
 
         {/* Category Badge */}
         {post.category && (
@@ -79,6 +87,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         </div>
       </Link>
     </Card>
+    </motion.div>
   );
 };
 

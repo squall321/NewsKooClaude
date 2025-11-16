@@ -7,11 +7,15 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
+from flask_caching import Cache
+from flask_compress import Compress
 
 # Extensions
 db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
+cache = Cache()
+compress = Compress()
 
 
 def create_app(config_name='development'):
@@ -33,6 +37,17 @@ def create_app(config_name='development'):
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
+
+    # Initialize caching (Simple cache for development, Redis for production)
+    cache_config = {
+        'CACHE_TYPE': 'SimpleCache',  # Use 'RedisCache' in production
+        'CACHE_DEFAULT_TIMEOUT': 300,  # 5 minutes
+    }
+    app.config.update(cache_config)
+    cache.init_app(app)
+
+    # Initialize compression
+    compress.init_app(app)
 
     # CORS 설정
     CORS(app, resources={

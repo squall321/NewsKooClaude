@@ -1,4 +1,6 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { buttonTap, buttonHover } from '../../lib/animations';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost';
@@ -21,9 +23,11 @@ const Button: React.FC<ButtonProps> = ({
   const sizeClass = size !== 'md' ? `btn-${size}` : '';
 
   return (
-    <button
+    <motion.button
       className={`${baseClass} ${variantClass} ${sizeClass} ${className}`}
       disabled={disabled || isLoading}
+      whileTap={!disabled && !isLoading ? buttonTap : undefined}
+      whileHover={!disabled && !isLoading ? buttonHover : undefined}
       {...props}
     >
       {isLoading && (
@@ -33,7 +37,7 @@ const Button: React.FC<ButtonProps> = ({
         </svg>
       )}
       {children}
-    </button>
+    </motion.button>
   );
 };
 
