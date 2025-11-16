@@ -49,6 +49,11 @@ frontend/dist/
 frontend/.vite/
 frontend/coverage/
 
+# Root node_modules (accidentally created)
+/node_modules/
+/package-lock.json
+/package.json
+
 # Backend
 backend/uploads/
 backend/*.log
