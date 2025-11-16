@@ -902,12 +902,17 @@
 | 18 | 이미지 관리 (Image Library) | 2025-11-16 | ✅ 완료 |
 | 19 | 카테고리/태그 관리 | 2025-11-16 | ✅ 완료 |
 | 20 | 분석 대시보드 (Analytics Dashboard) | 2025-11-16 | ✅ 완료 |
+| 21 | 프론트엔드 디자인 시스템 | 2025-11-16 | ✅ 완료 |
+| 22 | 공통 컴포넌트 라이브러리 | 2025-11-16 | ✅ 완료 |
+| 23 | 메인 레이아웃 | 2025-11-16 | ✅ 완료 |
+| 24 | 홈 피드 - 게시물 카드 | 2025-11-16 | ✅ 완료 |
+| 25 | 홈 피드 - 무한 스크롤 | 2025-11-16 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 16-20 완료 (Frontend Admin Panel)
+**Current Phase**: Phase 21-25 완료 (User Frontend UI)
 **목표 완료일**: 2025-11-16
 **진행률**: 100%
 
@@ -1015,5 +1020,121 @@
 - **8개 페이지**: Dashboard, Posts, Categories, Tags, Styles, Images, Analytics
 - **역할 기반 접근 제어**: User/Editor/Admin
 - **반응형 디자인**: Tailwind CSS
+- **TypeScript 100%**: 타입 안정성
+
+
+---
+
+## Phase 21-25: 사용자 프론트엔드 UI 구현
+**완료 날짜**: 2025-11-16
+**소요 시간**: 약 2시간
+
+### 구현 내용
+- [x] Phase 21: 프론트엔드 디자인 시스템
+- [x] Phase 22: 공통 컴포넌트 라이브러리
+- [x] Phase 23: 메인 레이아웃 (Header, Footer)
+- [x] Phase 24: 홈 피드 - 게시물 카드
+- [x] Phase 25: 홈 피드 - 무한 스크롤
+
+### 주요 코드 변경
+
+**Phase 21: Design System**:
+- `frontend/tailwind.config.js` - Tailwind 확장 설정
+  * 다크모드 지원 ('class' 모드)
+  * 커스텀 컬러 (primary, accent)
+  * 폰트 (Inter, Poppins)
+  * 애니메이션 (fade-in, slide-up, slide-down)
+  * 커스텀 그림자 (soft, hover)
+- `frontend/src/index.css` - 글로벌 스타일
+  * 버튼 스타일 (primary, secondary, accent, outline, ghost)
+  * 카드 스타일 (card, card-compact)
+  * 인풋 스타일
+  * 배지 스타일 (4가지 variant)
+  * Skeleton 로딩
+  * Prose 마크다운 스타일
+- `frontend/src/styles/designSystem.ts` - 디자인 토큰 (TypeScript)
+
+**Phase 22: Common Components**:
+- `frontend/src/components/common/Button.tsx` - 버튼 컴포넌트
+  * 5가지 variant (primary, secondary, accent, outline, ghost)
+  * 3가지 size (sm, md, lg)
+  * 로딩 상태 (spinner)
+- `frontend/src/components/common/Card.tsx` - 카드 컴포넌트
+  * Compact 모드
+  * Hoverable 효과
+- `frontend/src/components/common/Badge.tsx` - 배지 컴포넌트
+- `frontend/src/components/common/Modal.tsx` - 모달 컴포넌트
+  * 4가지 size (sm, md, lg, xl)
+  * 백드롭 클릭 닫기
+  * 애니메이션
+- `frontend/src/components/common/Skeleton.tsx` - 스켈레톤 로딩
+  * 4가지 variant (text, title, avatar, rect)
+  * SkeletonCard, SkeletonPostCard 프리셋
+- `frontend/src/components/common/Input.tsx` - 인풋 컴포넌트
+  * Label, Error, HelperText 지원
+
+**Phase 23: Main Layout**:
+- `frontend/src/components/layout/Header.tsx` - 헤더
+  * 네비게이션 메뉴
+  * 모바일 햄버거 메뉴
+  * 검색 & 다크모드 버튼
+- `frontend/src/components/layout/Footer.tsx` - 푸터
+  * 브랜드, Quick Links, Legal
+  * 소셜 미디어 링크
+- `frontend/src/components/layout/MainLayout.tsx` - 메인 레이아웃
+  * Header + Outlet + Footer
+
+**Phase 24-25: Home Feed**:
+- `frontend/src/components/post/PostCard.tsx` - 게시물 카드
+  * Featured Image
+  * Category Badge
+  * Title & Excerpt (line-clamp)
+  * Meta Info (views, date)
+  * Tags
+  * Hover 효과
+- `frontend/src/hooks/useInfiniteScroll.ts` - 무한 스크롤 훅
+  * Intersection Observer API
+  * Threshold 설정
+- `frontend/src/pages/Home.tsx` - 홈 페이지
+  * Hero Section
+  * Posts Grid (3 columns)
+  * Infinite Scroll
+  * Loading Skeletons
+  * Empty State
+- `frontend/src/pages/PostDetail.tsx` - 게시물 상세
+  * Featured Image
+  * Prose 스타일 콘텐츠
+  * Tags
+  * 공유 버튼
+
+**Routing**:
+- `frontend/src/App.tsx` - 라우팅 업데이트
+  * Public: `/`, `/post/:slug`
+  * Admin: `/admin/*`
+
+### 배운 점
+- Tailwind CSS 커스터마이징
+- TypeScript 제네릭으로 재사용 가능한 컴포넌트
+- Intersection Observer API로 무한 스크롤
+- React Query + Infinite Scroll 패턴
+- 반응형 그리드 (grid-cols-1 md:grid-cols-2 lg:grid-cols-3)
+- line-clamp 유틸리티 (텍스트 말줄임)
+- Prose 마크다운 스타일링
+
+### 어려웠던 점 & 해결 방법
+- **문제**: 무한 스크롤 중복 로딩
+  - **해결**: isLoading 상태로 중복 요청 방지
+
+- **문제**: 모바일 메뉴 애니메이션
+  - **해결**: Tailwind animate-slide-down 적용
+
+- **문제**: 마크다운 콘텐츠 스타일링
+  - **해결**: Prose 유틸리티 클래스 직접 구현
+
+### 핵심 성과
+- **완전한 디자인 시스템**: 색상, 타이포그래피, 그림자, 애니메이션
+- **7개 공통 컴포넌트**: Button, Card, Badge, Modal, Skeleton, Input
+- **반응형 레이아웃**: 모바일/태블릿/데스크탑 대응
+- **무한 스크롤**: 사용자 경험 최적화
 - **TypeScript 100%**: 타입 안정성
 

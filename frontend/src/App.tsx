@@ -3,7 +3,16 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Layouts
+import MainLayout from './components/layout/MainLayout';
 import AdminLayout from './components/admin/AdminLayout';
+
+// Public Pages
+import Home from './pages/Home';
+import PostDetail from './pages/PostDetail';
+
+// Admin Pages
 import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Inspirations from './pages/admin/Inspirations';
@@ -30,13 +39,16 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            {/* Redirect root to admin */}
-            <Route path="/" element={<Navigate to="/admin" replace />} />
+            {/* Public Routes */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/post/:slug" element={<PostDetail />} />
+            </Route>
 
-            {/* Login page */}
+            {/* Admin Login */}
             <Route path="/admin/login" element={<Login />} />
 
-            {/* Protected admin routes */}
+            {/* Protected Admin Routes */}
             <Route
               path="/admin"
               element={
