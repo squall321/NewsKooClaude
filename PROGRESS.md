@@ -746,6 +746,54 @@
 
 ---
 
+## Phase 11: Inspiration 관리 API
+**완료 날짜**: 2025-11-16
+**소요 시간**: 약 1시간
+
+### 구현 내용
+- [x] Inspiration CRUD API (11개 엔드포인트)
+- [x] 필터링 및 페이지네이션
+- [x] 승인/거부 워크플로우
+- [x] Draft 생성 연동
+- [x] 일괄 처리 기능
+- [x] 통계 조회
+
+### 주요 코드 변경
+
+**Inspiration API (11개 엔드포인트)**:
+- `backend/app/api/inspirations.py` - Inspiration 관리 API (500+ 줄)
+  * GET /api/inspirations - 목록 조회 (필터링, 정렬, 페이지네이션)
+  * GET /api/inspirations/{id} - 상세 조회
+  * PUT /api/inspirations/{id} - 수정 (Editor 이상)
+  * DELETE /api/inspirations/{id} - 삭제 (Admin만)
+  * POST /api/inspirations/{id}/approve - 승인
+  * POST /api/inspirations/{id}/reject - 거부
+  * POST /api/inspirations/{id}/create-draft - Draft 생성
+  * GET /api/inspirations/statistics - 통계 조회
+  * POST /api/inspirations/batch-approve - 일괄 승인
+  * POST /api/inspirations/batch-reject - 일괄 거부
+
+**Blueprint 등록**:
+- `backend/app/api/__init__.py` - inspirations_bp 등록
+
+**Scripts**:
+- `backend/scripts/test_inspirations.py` - Inspiration API 테스트
+
+### 배운 점
+- 복잡한 필터링 쿼리 구성 (status, similarity, platform 등)
+- 일괄 처리 API 설계
+- 승인/거부 워크플로우 구현
+- 통계 쿼리 최적화 (GROUP BY, AVG)
+
+### 핵심 성과
+- **11개 엔드포인트**: 완전한 Inspiration 관리 기능
+- **승인 워크플로우**: Editor가 수집된 영감 검토/승인
+- **Draft 연동**: Inspiration에서 바로 Draft 생성
+- **일괄 처리**: 여러 Inspiration 동시 승인/거부
+- **상세 통계**: 상태별, 플랫폼별 집계
+
+---
+
 ## 완료된 Phase 목록
 
 | Phase | 제목 | 완료일 | 상태 |
@@ -760,13 +808,14 @@
 | 8 | 크롤링 스케줄러 | 2025-11-15 | ✅ 완료 |
 | 9 | 수동 작성 우선 시스템 | 2025-11-15 | ✅ 완료 |
 | 10 | AI 보조 작성 인터페이스 | 2025-11-15 | ✅ 완료 |
+| 11 | Inspiration 관리 API | 2025-11-16 | ✅ 완료 |
 
 ---
 
 ## 현재 진행 중
 
-**Current Phase**: Phase 10 완료
-**목표 완료일**: 2025-11-15
+**Current Phase**: Phase 11 완료
+**목표 완료일**: 2025-11-16
 **진행률**: 100%
 
 ---
