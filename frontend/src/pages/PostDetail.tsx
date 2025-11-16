@@ -5,6 +5,8 @@ import axiosInstance from '../lib/axios';
 import { Post } from '../types';
 import Badge from '../components/common/Badge';
 import Skeleton from '../components/common/Skeleton';
+import SEO from '../components/common/SEO';
+import AdSense from '../components/ads/AdSense';
 import RelatedPosts from '../components/post/RelatedPosts';
 
 const PostDetail: React.FC = () => {
@@ -54,9 +56,22 @@ const PostDetail: React.FC = () => {
   }
 
   return (
-    <article className="bg-white">
-      {/* Header */}
-      <header className="bg-gray-50 border-b border-gray-200">
+    <>
+      <SEO
+        title={`${post.title} - NewsKoo`}
+        description={post.excerpt || post.title}
+        keywords={post.tags?.map(tag => tag.name) || []}
+        image={post.featured_image}
+        url={`/post/${post.slug}`}
+        type="article"
+        publishedTime={post.published_at || post.created_at}
+        modifiedTime={post.updated_at}
+        section={post.category?.name}
+        tags={post.tags?.map(tag => tag.name) || []}
+      />
+      <article className="bg-white">
+        {/* Header */}
+        <header className="bg-gray-50 border-b border-gray-200">
         <div className="container-custom py-8 max-w-4xl">
           {post.category && (
             <Badge variant="primary" className="mb-4">
@@ -91,6 +106,11 @@ const PostDetail: React.FC = () => {
         </div>
       )}
 
+      {/* Top Banner Ad */}
+      <div className="container-custom py-4 max-w-4xl">
+        <AdSense adSlot="1234567890" adFormat="horizontal" />
+      </div>
+
       {/* Content */}
       <div className="container-custom py-8 max-w-4xl">
         <div
@@ -108,6 +128,11 @@ const PostDetail: React.FC = () => {
             ))}
           </div>
         )}
+
+        {/* Bottom Banner Ad */}
+        <div className="mt-8 pt-8 border-t border-gray-200">
+          <AdSense adSlot="0987654321" adFormat="rectangle" />
+        </div>
       </div>
 
       {/* Share & Back */}
@@ -163,6 +188,7 @@ const PostDetail: React.FC = () => {
         </div>
       </div>
     </article>
+    </>
   );
 };
 

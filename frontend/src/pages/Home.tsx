@@ -5,6 +5,8 @@ import PostCard from '../components/post/PostCard';
 import { SkeletonPostCard } from '../components/common/Skeleton';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import Button from '../components/common/Button';
+import SEO from '../components/common/SEO';
+import NativeAd from '../components/ads/NativeAd';
 import { staggerContainer, fadeInUp } from '../lib/animations';
 
 type SortOption = 'latest' | 'popular' | 'trending';
@@ -56,9 +58,16 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
+    <>
+      <SEO
+        title="NewsKoo - 전 세계의 유머, 한국식으로"
+        description="Reddit, Twitter의 재미있는 이야기를 AI가 한국 문화에 맞게 재해석합니다. 매일 새로운 유머 콘텐츠를 만나보세요."
+        keywords={['유머', '한국어', '재미있는 이야기', 'Reddit 번역', 'AI 번역', '한국 유머', '웃긴 글']}
+        url="/"
+      />
+      <div className="bg-gray-50 min-h-screen">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
         <motion.div
           className="container-custom"
           initial="initial"
@@ -119,8 +128,12 @@ const Home: React.FC = () => {
           animate="animate"
           variants={staggerContainer}
         >
-          {data?.data.map((post) => (
-            <PostCard key={post.id} post={post} />
+          {data?.data.map((post, index) => (
+            <React.Fragment key={post.id}>
+              <PostCard post={post} />
+              {/* Insert ads at position 3 and 7 */}
+              {(index === 2 || index === 6) && <NativeAd position={index} />}
+            </React.Fragment>
           ))}
 
           {/* Loading Skeletons */}
@@ -159,6 +172,7 @@ const Home: React.FC = () => {
         )}
       </section>
     </div>
+    </>
   );
 };
 
