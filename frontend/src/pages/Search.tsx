@@ -5,13 +5,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search as SearchIcon, Loader2 } from 'lucide-react';
+import { Search as SearchIcon } from 'lucide-react';
 import SearchBar from '../components/search/SearchBar';
 import SearchFilters from '../components/search/SearchFilters';
 import PostCard from '../components/common/PostCard';
 import Pagination from '../components/common/Pagination';
 import axiosInstance from '../lib/axios';
-import { staggerContainer, staggerItem } from '../lib/animations';
+import { PostListSkeleton } from '../components/common/Skeleton';
+import AnimatedPage from '../components/common/AnimatedPage';
+import ProgressBar from '../components/common/ProgressBar';
+import LoadingIndicator from '../components/common/LoadingIndicator';
+import { staggerContainer, scaleIn, fadeInUp } from '../lib/animations-enhanced';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 interface Post {
   id: number;
@@ -48,6 +53,9 @@ const Search: React.FC = () => {
 
   const [filters, setFilters] = useState<any>({});
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
+
+  const { ref: headerRef, isInView: headerInView } = useScrollAnimation();
+  const { ref: resultsRef, isInView: resultsInView } = useScrollAnimation();
 
   // 검색 실행
   useEffect(() => {
@@ -103,116 +111,151 @@ const Search: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 검색바 */}
-        <div className="mb-8">
-          <SearchBar />
-        </div>
+    <>
+      <ProgressBar />
+      <AnimatedPage>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* 검색바 */}
+            <motion.div
+              className="mb-8"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <SearchBar />
+            </motion.div>
 
-        {/* 검색어 표시 및 필터 */}
-        {query && (
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                "{query}" 검색 결과
-              </h1>
-              {results && (
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                  총 {results.total.toLocaleString()}개의 결과를 찾았습니다
-                </p>
-              )}
-            </div>
+            {/* 검색어 표시 및 필터 */}
+            {query && (
+              <motion.div
+                ref={headerRef}
+                className="mb-6 flex items-center justify-between"
+                variants={fadeInUp}
+                initial="initial"
+                animate={headerInView ? "animate" : "initial"}
+              >
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    "{query}" 검색 결과
+                  </h1>
+                  {results && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      총 {results.total.toLocaleString()}개의 결과를 찾았습니다
+                    </p>
+                  )}
+                </div>
 
-            <SearchFilters onFiltersChange={handleFiltersChange} />
-          </div>
-        )}
+                <SearchFilters onFiltersChange={handleFiltersChange} />
+              </motion.div>
+            )}
 
-        {/* 로딩 상태 */}
-        {isLoading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">검색 중...</p>
-          </div>
-        )}
+            {/* 로딩 상태 */}
+            {isLoading && (
+              <PostListSkeleton count={9} />
+            )}
 
-        {/* 에러 상태 */}
-        {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
-            <p className="text-red-600 dark:text-red-400">{error}</p>
-          </div>
-        )}
+            {/* 에러 상태 */}
+            {error && (
+              <motion.div
+                className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center"
+                variants={scaleIn}
+                initial="initial"
+                animate="animate"
+              >
+                <p className="text-red-600 dark:text-red-400">{error}</p>
+              </motion.div>
+            )}
 
-        {/* 검색 결과 */}
-        {!isLoading && !error && results && (
-          <>
-            {results.posts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  검색 결과가 없습니다
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
-                  다른 검색어를 시도하거나 필터를 변경해보세요.
-                </p>
-              </div>
-            ) : (
+            {/* 검색 결과 */}
+            {!isLoading && !error && results && (
               <>
-                {/* 검색 결과 목록 */}
-                <motion.div
-                  variants={staggerContainer}
-                  initial="initial"
-                  animate="animate"
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
-                >
-                  {results.posts.map((post) => (
-                    <motion.div key={post.id} variants={staggerItem}>
-                      <PostCard
-                        id={post.id}
-                        title={post.title}
-                        excerpt={post.content}
-                        imageUrl={post.image_url}
-                        category={post.category?.name}
-                        tags={post.tags.map((t) => t.name)}
-                        views={post.views}
-                        likes={post.likes_count}
-                        comments={post.comments_count}
-                        publishedAt={post.created_at}
-                        slug={post.slug}
-                      />
+                {results.posts.length === 0 ? (
+                  <motion.div
+                    className="flex flex-col items-center justify-center py-20"
+                    variants={fadeInUp}
+                    initial="initial"
+                    animate="animate"
+                  >
+                    <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                      검색 결과가 없습니다
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+                      다른 검색어를 시도하거나 필터를 변경해보세요.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <>
+                    {/* 검색 결과 목록 */}
+                    <motion.div
+                      ref={resultsRef}
+                      variants={staggerContainer}
+                      initial="initial"
+                      animate={resultsInView ? "animate" : "initial"}
+                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+                    >
+                      {results.posts.map((post) => (
+                        <motion.div key={post.id} variants={scaleIn}>
+                          <PostCard
+                            id={post.id}
+                            title={post.title}
+                            excerpt={post.content}
+                            imageUrl={post.image_url}
+                            category={post.category?.name}
+                            tags={post.tags.map((t) => t.name)}
+                            views={post.views}
+                            likes={post.likes_count}
+                            comments={post.comments_count}
+                            publishedAt={post.created_at}
+                            slug={post.slug}
+                          />
+                        </motion.div>
+                      ))}
                     </motion.div>
-                  ))}
-                </motion.div>
 
-                {/* 페이지네이션 */}
-                {results.pages > 1 && (
-                  <div className="flex justify-center">
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={results.pages}
-                      onPageChange={handlePageChange}
-                    />
-                  </div>
+                    {/* 페이지네이션 */}
+                    {results.pages > 1 && (
+                      <motion.div
+                        className="flex justify-center"
+                        variants={fadeInUp}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                      >
+                        <Pagination
+                          currentPage={currentPage}
+                          totalPages={results.pages}
+                          onPageChange={handlePageChange}
+                        />
+                      </motion.div>
+                    )}
+                  </>
                 )}
               </>
             )}
-          </>
-        )}
 
-        {/* 검색어 없음 */}
-        {!query && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              검색어를 입력하세요
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
-              원하시는 콘텐츠를 찾기 위해 검색어를 입력해주세요.
-            </p>
+            {/* 검색어 없음 */}
+            {!query && (
+              <motion.div
+                className="flex flex-col items-center justify-center py-20"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+              >
+                <SearchIcon className="w-16 h-16 text-gray-400 mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  검색어를 입력하세요
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+                  원하시는 콘텐츠를 찾기 위해 검색어를 입력해주세요.
+                </p>
+              </motion.div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      </AnimatedPage>
+    </>
   );
 };
 
