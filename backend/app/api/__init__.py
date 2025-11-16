@@ -21,6 +21,10 @@ from app.api.admin import admin_bp
 from app.api.drafts import drafts_bp
 from app.api.ai_assistant import ai_assistant_bp
 from app.api.inspirations import inspirations_bp
+from app.api.sources import sources_bp
+from app.api.writing_styles import writing_styles_bp
+from app.api.analytics import analytics_bp
+from app.api.users import users_bp
 
 api_bp.register_blueprint(auth_bp, url_prefix='/auth')
 api_bp.register_blueprint(posts_bp, url_prefix='/posts')
@@ -30,3 +34,7 @@ api_bp.register_blueprint(admin_bp, url_prefix='/admin')
 api_bp.register_blueprint(drafts_bp, url_prefix='/drafts')
 api_bp.register_blueprint(ai_assistant_bp, url_prefix='/ai-assistant')
 api_bp.register_blueprint(inspirations_bp, url_prefix='/inspirations')
+api_bp.register_blueprint(sources_bp, url_prefix='/sources')
+api_bp.register_blueprint(writing_styles_bp, url_prefix='/writing-styles')
+api_bp.register_blueprint(analytics_bp, url_prefix='/analytics')
+api_bp.register_blueprint(users_bp, url_prefix='/users')
