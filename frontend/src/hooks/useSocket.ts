@@ -11,13 +11,14 @@ import { useAuth } from '../contexts/AuthContext';
  * WebSocket 연결 Hook
  */
 export const useSocket = () => {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState(0);
 
   useEffect(() => {
     // 토큰이 있을 때만 연결
-    if (token) {
+    const token = localStorage.getItem('access_token');
+    if (token && isAuthenticated) {
       socketClient.connect(token);
       setIsConnected(socketClient.isConnected);
     }
@@ -38,7 +39,7 @@ export const useSocket = () => {
       socketClient.off('disconnect', handleDisconnect);
       socketClient.off('online_users_count', handleOnlineUsers);
     };
-  }, [token]);
+  }, [isAuthenticated]);
 
   return {
     isConnected,

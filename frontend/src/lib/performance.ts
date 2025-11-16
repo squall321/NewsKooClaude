@@ -166,12 +166,12 @@ export class PerformanceMonitor {
    */
   static async getWebVitals() {
     try {
-      const { onCLS, onFID, onFCP, onLCP, onTTFB } = await import('web-vitals');
+      const { onCLS, onINP, onFCP, onLCP, onTTFB } = await import('web-vitals');
 
       const vitals: any = {};
 
       onCLS((metric: any) => (vitals.cls = metric.value));
-      onFID((metric: any) => (vitals.fid = metric.value));
+      onINP((metric: any) => (vitals.inp = metric.value));
       onFCP((metric: any) => (vitals.fcp = metric.value));
       onLCP((metric: any) => (vitals.lcp = metric.value));
       onTTFB((metric: any) => (vitals.ttfb = metric.value));

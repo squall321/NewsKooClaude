@@ -79,7 +79,7 @@ export const PostDetailSkeleton: React.FC = () => {
     <div className="container-custom py-12 max-w-4xl">
       <Skeleton variant="title" className="mb-4" />
       <Skeleton variant="text" className="mb-2" />
-      <Skeleton variant="rect" height={400} className="mb-8" />
+      <Skeleton variant="rect" height="400px" className="mb-8" />
       <Skeleton variant="text" />
       <Skeleton variant="text" />
       <Skeleton variant="text" />

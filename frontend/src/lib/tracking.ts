@@ -83,7 +83,7 @@ export const trackPageView = async (path: string, title?: string, duration?: num
 
     if (response.data.session_id) {
       sessionId = response.data.session_id;
-      localStorage.setItem('session_id', sessionId);
+      localStorage.setItem('session_id', sessionId || '');
     }
 
     return response.data.pageview_id;

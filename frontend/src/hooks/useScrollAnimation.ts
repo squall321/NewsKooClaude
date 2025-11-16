@@ -20,7 +20,7 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
     once: triggerOnce,
-    margin: rootMargin,
+    margin: rootMargin as `${number}px` | `${number}%`,
     amount: threshold,
   });
 

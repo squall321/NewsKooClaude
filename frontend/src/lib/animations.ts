@@ -95,9 +95,9 @@ export const buttonTap = {
   scale: 0.95,
   transition: {
     duration: 0.1,
-    ease: 'easeInOut',
+    ease: 'easeInOut' as const,
   },
-};
+} as const;
 
 /**
  * Button hover animation
@@ -107,9 +107,9 @@ export const buttonHover = {
   scale: 1.02,
   transition: {
     duration: 0.2,
-    ease: 'easeOut',
+    ease: 'easeOut' as const,
   },
-};
+} as const;
 
 /**
  * Card hover animation

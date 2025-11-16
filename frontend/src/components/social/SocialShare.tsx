@@ -70,7 +70,7 @@ const SocialShare: React.FC<SocialShareProps> = ({ title, excerpt, url }) => {
       <span className="text-sm text-gray-600 mr-2">Share:</span>
 
       {/* Native Share (Mobile) */}
-      {navigator.share && (
+      {typeof navigator.share !== 'undefined' && (
         <Button
           size="sm"
           variant="ghost"

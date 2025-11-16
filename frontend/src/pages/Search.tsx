@@ -197,17 +197,24 @@ const Search: React.FC = () => {
                       {results.posts.map((post) => (
                         <motion.div key={post.id} variants={scaleIn}>
                           <PostCard
-                            id={post.id}
-                            title={post.title}
-                            excerpt={post.content}
-                            imageUrl={post.image_url}
-                            category={post.category?.name}
-                            tags={post.tags.map((t) => t.name)}
-                            views={post.views}
-                            likes={post.likes_count}
-                            comments={post.comments_count}
-                            publishedAt={post.created_at}
-                            slug={post.slug}
+                            post={{
+                              ...post,
+                              user_id: 0,
+                              excerpt: post.content.substring(0, 200),
+                              status: 'published' as const,
+                              updated_at: post.created_at,
+                              featured_image: post.image_url,
+                              category: post.category ? {
+                                ...post.category,
+                                slug: '',
+                                created_at: '',
+                              } : undefined,
+                              tags: post.tags.map(tag => ({
+                                ...tag,
+                                slug: '',
+                                created_at: '',
+                              })),
+                            }}
                           />
                         </motion.div>
                       ))}
