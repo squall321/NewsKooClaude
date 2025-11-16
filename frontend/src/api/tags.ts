@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axios';
-import { Tag } from '../types';
+import type { Tag } from '../types';
 
 export const tagsApi = {
   // Get all tags

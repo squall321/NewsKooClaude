@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../../lib/axios';
-import { Post } from '../../types';
+import type { Post } from '../../types';
 import Card from '../common/Card';
 import Skeleton from '../common/Skeleton';
 

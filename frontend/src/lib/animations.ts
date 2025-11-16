@@ -4,7 +4,7 @@
  * Reusable animation configurations for consistent UI interactions
  */
 
-import { Variants } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
 /**
  * Page transition animations

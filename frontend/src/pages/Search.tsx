@@ -8,13 +8,12 @@ import { motion } from 'framer-motion';
 import { Search as SearchIcon } from 'lucide-react';
 import SearchBar from '../components/search/SearchBar';
 import SearchFilters from '../components/search/SearchFilters';
-import PostCard from '../components/common/PostCard';
+import PostCard from '../components/post/PostCard';
 import Pagination from '../components/common/Pagination';
 import axiosInstance from '../lib/axios';
 import { PostListSkeleton } from '../components/common/Skeleton';
 import AnimatedPage from '../components/common/AnimatedPage';
 import ProgressBar from '../components/common/ProgressBar';
-import LoadingIndicator from '../components/common/LoadingIndicator';
 import { staggerContainer, scaleIn, fadeInUp } from '../lib/animations-enhanced';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 

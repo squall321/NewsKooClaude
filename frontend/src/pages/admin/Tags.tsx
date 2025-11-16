@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { tagsApi } from '../../api/tags';
-import { Tag } from '../../types';
+import type { Tag } from '../../types';
 
 const Tags: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

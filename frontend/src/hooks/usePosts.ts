@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { postsApi } from '../api/posts';
-import { Post } from '../types';
+import type { Post } from '../types';
 
 export const usePosts = (params?: {
   page?: number;

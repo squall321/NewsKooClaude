@@ -3,10 +3,9 @@
  * 다양한 로딩 상태를 위한 애니메이션
  */
 
-import React from 'react';
+import type { FC } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import { spin, pulse } from '../../lib/animations-enhanced';
 
 interface LoadingIndicatorProps {
   size?: 'sm' | 'md' | 'lg';
@@ -15,7 +14,7 @@ interface LoadingIndicatorProps {
   fullScreen?: boolean;
 }
 
-const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
+const LoadingIndicator: FC<LoadingIndicatorProps> = ({
   size = 'md',
   variant = 'spinner',
   text,
@@ -35,7 +34,10 @@ const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
     <div className={containerClass}>
       <div className="flex flex-col items-center gap-3">
         {variant === 'spinner' && (
-          <motion.div animate={spin}>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          >
             <Loader2 className={`${sizeClasses[size]} text-primary-600`} />
           </motion.div>
         )}
@@ -65,7 +67,8 @@ const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
         {variant === 'pulse' && (
           <motion.div
             className={`${sizeClasses[size]} bg-primary-600 rounded-full`}
-            animate={pulse}
+            animate={{ scale: [1, 1.05, 1], opacity: [1, 0.8, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           />
         )}
 
@@ -88,7 +91,8 @@ const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
         {text && (
           <motion.p
             className="text-sm text-gray-600 dark:text-gray-400"
-            animate={pulse}
+            animate={{ scale: [1, 1.05, 1], opacity: [1, 0.8, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
             {text}
           </motion.p>
@@ -101,9 +105,13 @@ const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
 /**
  * 인라인 스피너
  */
-export const InlineSpinner: React.FC<{ className?: string }> = ({ className = '' }) => {
+export const InlineSpinner: FC<{ className?: string }> = ({ className = '' }) => {
   return (
-    <motion.div animate={spin} className={`inline-block ${className}`}>
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      className={`inline-block ${className}`}
+    >
       <Loader2 className="w-4 h-4" />
     </motion.div>
   );
@@ -112,10 +120,13 @@ export const InlineSpinner: React.FC<{ className?: string }> = ({ className = ''
 /**
  * 버튼 로딩 상태
  */
-export const ButtonLoading: React.FC<{ text?: string }> = ({ text = 'Loading...' }) => {
+export const ButtonLoading: FC<{ text?: string }> = ({ text = 'Loading...' }) => {
   return (
     <span className="flex items-center gap-2">
-      <motion.div animate={spin}>
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+      >
         <Loader2 className="w-4 h-4" />
       </motion.div>
       <span>{text}</span>

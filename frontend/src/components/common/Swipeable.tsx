@@ -3,8 +3,9 @@
  * 모바일 UX 향상
  */
 
-import React, { ReactNode } from 'react';
-import { motion, PanInfo, useAnimation } from 'framer-motion';
+import type { FC, ReactNode } from 'react';
+import type { PanInfo } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 
 interface SwipeableProps {
   children: ReactNode;
@@ -16,7 +17,7 @@ interface SwipeableProps {
   className?: string;
 }
 
-const Swipeable: React.FC<SwipeableProps> = ({
+const Swipeable: FC<SwipeableProps> = ({
   children,
   onSwipeLeft,
   onSwipeRight,
@@ -28,7 +29,7 @@ const Swipeable: React.FC<SwipeableProps> = ({
   const controls = useAnimation();
 
   const handleDragEnd = (_: any, info: PanInfo) => {
-    const { offset, velocity } = info;
+    const { offset } = info;
 
     // 수평 스와이프
     if (Math.abs(offset.x) > Math.abs(offset.y)) {

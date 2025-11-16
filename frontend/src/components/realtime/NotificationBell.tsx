@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useNotifications } from '../../hooks/useSocket';
 
 const NotificationBell: React.FC = () => {

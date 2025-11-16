@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axios';
-import { Category } from '../types';
+import type { Category } from '../types';
 
 export const categoriesApi = {
   // Get all categories

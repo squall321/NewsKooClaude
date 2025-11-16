@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePosts, useDeletePost, usePublishPost, useHidePost } from '../../hooks/usePosts';
-import { Post } from '../../types';
+import type { Post } from '../../types';
 
 const Posts: React.FC = () => {
   const [page, setPage] = useState(1);

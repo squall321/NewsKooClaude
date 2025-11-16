@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import axiosInstance from '../lib/axios';
-import { Post } from '../types';
+import type { Post } from '../types';
 import Badge from '../components/common/Badge';
 import { PostDetailSkeleton } from '../components/common/Skeleton';
 import SEO from '../components/common/SEO';

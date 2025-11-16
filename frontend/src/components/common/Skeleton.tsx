@@ -57,3 +57,32 @@ export const SkeletonPostCard: React.FC = () => {
 };
 
 export default Skeleton;
+
+/**
+ * PostList Skeleton - 여러 개의 포스트 카드 skeleton
+ */
+export const PostListSkeleton: React.FC<{ count?: number }> = ({ count = 6 }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: count }).map((_, index) => (
+        <SkeletonPostCard key={index} />
+      ))}
+    </div>
+  );
+};
+
+/**
+ * PostDetail Skeleton - 포스트 상세 페이지 skeleton
+ */
+export const PostDetailSkeleton: React.FC = () => {
+  return (
+    <div className="container-custom py-12 max-w-4xl">
+      <Skeleton variant="title" className="mb-4" />
+      <Skeleton variant="text" className="mb-2" />
+      <Skeleton variant="rect" height={400} className="mb-8" />
+      <Skeleton variant="text" />
+      <Skeleton variant="text" />
+      <Skeleton variant="text" />
+    </div>
+  );
+};

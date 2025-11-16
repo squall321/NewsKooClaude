@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Post } from '../../types';
+import type { Post } from '../../types';
 import Card from '../common/Card';
 import Badge from '../common/Badge';
 import { staggerItem, imageFadeIn } from '../../lib/animations';

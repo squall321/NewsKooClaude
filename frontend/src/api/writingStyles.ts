@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axios';
-import { WritingStyle } from '../types';
+import type { WritingStyle } from '../types';
 
 export const writingStylesApi = {
   // Get all writing styles for current user

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../../lib/axios';
-import { Post } from '../../types';
+import type { Post } from '../../types';
 import PostCard from '../post/PostCard';
 import { SkeletonPostCard } from '../common/Skeleton';
 

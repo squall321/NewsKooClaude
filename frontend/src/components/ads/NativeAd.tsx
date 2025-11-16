@@ -9,7 +9,7 @@ interface NativeAdProps {
  * Native Ad Component
  * Blends in with post cards for better UX
  */
-const NativeAd: React.FC<NativeAdProps> = ({ position = 0 }) => {
+const NativeAd: React.FC<NativeAdProps> = ({ position: _position = 0 }) => {
   return (
     <Card className="border-2 border-dashed border-gray-300 bg-gray-50">
       <div className="text-center py-8">

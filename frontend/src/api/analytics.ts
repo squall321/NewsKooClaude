@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axios';
-import { AnalyticsOverview, ContentStats } from '../types';
+import type { AnalyticsOverview, ContentStats } from '../types';
 
 export const analyticsApi = {
   // Get system overview

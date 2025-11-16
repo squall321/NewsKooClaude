@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthResponse } from '../types';
+import type { ReactNode } from 'react';
+import type { User, AuthResponse } from '../types';
 import axiosInstance from '../lib/axios';
 
 interface AuthContextType {

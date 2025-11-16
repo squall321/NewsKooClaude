@@ -5,7 +5,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { socketClient } from '../lib/socket';
-import { useAuth } from './useAuth';
+import { useAuth } from '../contexts/AuthContext';
 
 /**
  * WebSocket 연결 Hook

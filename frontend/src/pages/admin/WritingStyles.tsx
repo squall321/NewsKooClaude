@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { writingStylesApi } from '../../api/writingStyles';
-import { WritingStyle } from '../../types';
+import type { WritingStyle } from '../../types';
 
 const WritingStyles: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

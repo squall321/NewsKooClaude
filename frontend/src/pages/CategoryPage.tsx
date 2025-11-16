@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
-import { Category, Post } from '../types';
+import type { Category, Post } from '../types';
 import PostCard from '../components/post/PostCard';
 import { SkeletonPostCard } from '../components/common/Skeleton';
 import Button from '../components/common/Button';

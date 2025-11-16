@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
-import { Post } from '../types';
+import type { Post } from '../types';
 import PostCard from '../components/post/PostCard';
 import { SkeletonPostCard } from '../components/common/Skeleton';
 import Input from '../components/common/Input';

@@ -3,7 +3,8 @@
  * 사용자 피드백을 위한 부드러운 알림
  */
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState} from 'react';
+import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { toast as toastAnimation } from '../../lib/animations-enhanced';

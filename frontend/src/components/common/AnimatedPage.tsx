@@ -3,7 +3,7 @@
  * 모든 페이지에 일관된 전환 효과 제공
  */
 
-import React, { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { pageTransition } from '../../lib/animations-enhanced';
@@ -13,7 +13,7 @@ interface AnimatedPageProps {
   className?: string;
 }
 
-const AnimatedPage: React.FC<AnimatedPageProps> = ({ children, className = '' }) => {
+const AnimatedPage: FC<AnimatedPageProps> = ({ children, className = '' }) => {
   const location = useLocation();
 
   return (

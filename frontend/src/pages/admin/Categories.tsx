@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { categoriesApi } from '../../api/categories';
-import { Category } from '../../types';
+import type { Category } from '../../types';
 
 const Categories: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

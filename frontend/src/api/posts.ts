@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axios';
-import { Post, PaginatedResponse } from '../types';
+import type { Post, PaginatedResponse } from '../types';
 
 export const postsApi = {
   // Get all posts with pagination and filters
