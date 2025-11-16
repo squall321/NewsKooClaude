@@ -5,6 +5,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ToastProvider } from './components/common/Toast';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import ScrollRestoration from './components/common/ScrollRestoration';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Layouts (not lazy - needed immediately)
@@ -47,59 +49,62 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <ToastProvider>
-            <BrowserRouter>
-              <AuthProvider>
-                <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/post/:slug" element={<PostDetail />} />
-                    <Route path="/category/:slug" element={<CategoryPage />} />
-                    <Route path="/search" element={<SearchPage />} />
-                  </Route>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <ToastProvider>
+              <BrowserRouter>
+                <ScrollRestoration />
+                <AuthProvider>
+                  <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route element={<MainLayout />}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/post/:slug" element={<PostDetail />} />
+                      <Route path="/category/:slug" element={<CategoryPage />} />
+                      <Route path="/search" element={<SearchPage />} />
+                    </Route>
 
-                  {/* Admin Login */}
-                  <Route path="/admin/login" element={<Login />} />
+                    {/* Admin Login */}
+                    <Route path="/admin/login" element={<Login />} />
 
-                  {/* Protected Admin Routes */}
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute>
-                        <AdminLayout />
-                      </ProtectedRoute>
-                    }
-                  >
-                    <Route index element={<Dashboard />} />
-                    <Route path="inspirations" element={<Inspirations />} />
-                    <Route path="drafts" element={<Drafts />} />
-                    <Route path="posts" element={<Posts />} />
-                    <Route path="categories" element={<Categories />} />
-                    <Route path="tags" element={<Tags />} />
-                    <Route path="styles" element={<WritingStyles />} />
-                    <Route path="images" element={<Images />} />
+                    {/* Protected Admin Routes */}
                     <Route
-                      path="analytics"
+                      path="/admin"
                       element={
-                        <ProtectedRoute requireRole="editor">
-                          <Analytics />
+                        <ProtectedRoute>
+                          <AdminLayout />
                         </ProtectedRoute>
                       }
-                    />
-                  </Route>
-                  </Routes>
-                </Suspense>
-              </AuthProvider>
-            </BrowserRouter>
-          </ToastProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
+                    >
+                      <Route index element={<Dashboard />} />
+                      <Route path="inspirations" element={<Inspirations />} />
+                      <Route path="drafts" element={<Drafts />} />
+                      <Route path="posts" element={<Posts />} />
+                      <Route path="categories" element={<Categories />} />
+                      <Route path="tags" element={<Tags />} />
+                      <Route path="styles" element={<WritingStyles />} />
+                      <Route path="images" element={<Images />} />
+                      <Route
+                        path="analytics"
+                        element={
+                          <ProtectedRoute requireRole="editor">
+                            <Analytics />
+                          </ProtectedRoute>
+                        }
+                      />
+                    </Route>
+                    </Routes>
+                  </Suspense>
+                </AuthProvider>
+              </BrowserRouter>
+            </ToastProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 
