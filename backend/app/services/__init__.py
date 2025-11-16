@@ -8,6 +8,7 @@ from .similarity_checker import SimilarityChecker
 from .reddit_crawler import RedditCrawler
 from .scheduler import SchedulerService, get_scheduler, init_scheduler
 from .image_processor import ImageProcessor
+from .ai_rewriter import AIRewriter, get_ai_rewriter
 
 __all__ = [
     'ContentGenerator',
@@ -16,5 +17,7 @@ __all__ = [
     'SchedulerService',
     'get_scheduler',
     'init_scheduler',
-    'ImageProcessor'
+    'ImageProcessor',
+    'AIRewriter',
+    'get_ai_rewriter'
 ]
