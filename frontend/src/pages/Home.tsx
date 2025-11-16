@@ -5,12 +5,28 @@ import { SkeletonPostCard } from '../components/common/Skeleton';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import Button from '../components/common/Button';
 
+type SortOption = 'latest' | 'popular' | 'trending';
+
 const Home: React.FC = () => {
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState<SortOption>('latest');
+
+  const getSortParams = () => {
+    switch (sortBy) {
+      case 'popular':
+        return { sort: 'views', order: 'desc' };
+      case 'trending':
+        return { sort: 'created_at', order: 'desc' }; // TODO: implement trending logic
+      default:
+        return { sort: 'published_at', order: 'desc' };
+    }
+  };
+
   const { data, isLoading, error } = usePosts({
     page,
     per_page: 12,
     status: 'published',
+    ...getSortParams(),
   });
 
   const loadMoreRef = useInfiniteScroll({
@@ -56,13 +72,34 @@ const Home: React.FC = () => {
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-gray-900">Latest Stories</h2>
           <div className="flex gap-2">
-            <Button variant="ghost" size="sm">
+            <Button
+              variant={sortBy === 'latest' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setSortBy('latest');
+                setPage(1);
+              }}
+            >
               Latest
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button
+              variant={sortBy === 'popular' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setSortBy('popular');
+                setPage(1);
+              }}
+            >
               Popular
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button
+              variant={sortBy === 'trending' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => {
+                setSortBy('trending');
+                setPage(1);
+              }}
+            >
               Trending
             </Button>
           </div>

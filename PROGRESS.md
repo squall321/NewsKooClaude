@@ -1138,3 +1138,89 @@
 - **무한 스크롤**: 사용자 경험 최적화
 - **TypeScript 100%**: 타입 안정성
 
+
+---
+
+## Phase 26-30: 사용자 프론트엔드 고급 기능
+**완료 날짜**: 2025-11-16
+**소요 시간**: 약 1.5시간
+
+### 구현 내용
+- [x] Phase 26: 게시물 상세 페이지 고도화
+- [x] Phase 27: 카테고리 페이지
+- [x] Phase 28: 검색 기능
+- [x] Phase 29: 필터 및 정렬
+- [x] Phase 30: 다크모드
+
+### 주요 코드 변경
+
+**Phase 26: 게시물 상세 페이지 고도화**:
+- `frontend/src/components/post/RelatedPosts.tsx` - 관련 게시물 컴포넌트
+  * 같은 카테고리의 다른 게시물 3개 표시
+  * Skeleton 로딩
+- `frontend/src/pages/PostDetail.tsx` - 상세 페이지 개선
+  * 조회수 자동 증가 (useEffect)
+  * 공유 기능 (Navigator.share API + Twitter)
+  * 관련 게시물 섹션 추가
+
+**Phase 27: 카테고리 페이지**:
+- `frontend/src/pages/CategoryPage.tsx` - 카테고리별 게시물 목록
+  * 카테고리 정보 헤더
+  * 게시물 그리드 (3 columns)
+  * 무한 스크롤
+  * Empty State
+
+**Phase 28: 검색 기능**:
+- `frontend/src/pages/SearchPage.tsx` - 검색 페이지
+  * 검색 입력 (debounce 500ms)
+  * URL 쿼리 파라미터 (?q=keyword)
+  * 검색 결과 그리드
+  * Empty/No Results State
+- `frontend/src/components/layout/Header.tsx` - 검색 버튼 추가
+  * 데스크탑/모바일 검색 버튼
+  * /search 페이지로 이동
+
+**Phase 29: 필터 및 정렬**:
+- `frontend/src/pages/Home.tsx` - 정렬 기능 추가
+  * Latest (published_at desc)
+  * Popular (views desc)
+  * Trending (created_at desc)
+  * 정렬 변경 시 페이지 초기화
+
+**Phase 30: 다크모드**:
+- `frontend/src/contexts/ThemeContext.tsx` - 테마 Context
+  * localStorage 저장
+  * 시스템 설정 감지
+  * 'dark' 클래스 토글
+- `frontend/src/components/layout/Header.tsx` - 다크모드 토글 버튼
+  * 해/달 아이콘
+  * 데스크탑/모바일 버튼
+- `frontend/src/index.css` - 다크모드 스타일
+  * body, card, input, prose 다크모드 지원
+- `frontend/src/App.tsx` - ThemeProvider 추가
+
+### 배운 점
+- Navigator.share API (Web Share API)
+- URL 쿼리 파라미터 관리 (useSearchParams)
+- Debounce 패턴 (useEffect + setTimeout)
+- 다크모드 구현 (Tailwind 'dark' class)
+- localStorage 테마 저장
+- 시스템 설정 감지 (prefers-color-scheme)
+
+### 어려웠던 점 & 해결 방법
+- **문제**: 검색 입력할 때마다 API 호출
+  - **해결**: Debounce로 500ms 지연 후 검색
+
+- **문제**: 다크모드 새로고침 시 깜빡임
+  - **해결**: localStorage에서 초기값 읽기
+
+- **문제**: 다크모드 스타일 일관성
+  - **해결**: Tailwind dark: prefix 활용
+
+### 핵심 성과
+- **완전한 검색**: Debounce + URL 쿼리 파라미터
+- **다크모드**: 시스템 설정 감지 + 토글 버튼
+- **정렬/필터**: Latest/Popular/Trending
+- **관련 게시물**: 카테고리별 추천
+- **공유 기능**: Web Share API + Twitter
+
