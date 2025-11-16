@@ -23,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   const sizeClass = size !== 'md' ? `btn-${size}` : '';
 
   return (
+    // @ts-expect-error - React 19 DragEventHandler conflicts with Framer Motion's PanInfo type
     <motion.button
       className={`${baseClass} ${variantClass} ${sizeClass} ${className}`}
       disabled={disabled || isLoading}

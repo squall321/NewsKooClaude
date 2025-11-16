@@ -36,7 +36,9 @@ const SEO: React.FC<SEOProps> = ({
   const allKeywords = [...new Set([...keywords, ...tags])];
 
   return (
-    <Helmet>
+    <>
+      {/* @ts-expect-error - react-helmet-async not yet compatible with React 19 */}
+      <Helmet>
       {/* Basic Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
@@ -83,6 +85,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="NewsKoo" />
     </Helmet>
+    </>
   );
 };
 

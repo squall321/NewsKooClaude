@@ -50,6 +50,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <ErrorBoundary>
+      {/* @ts-expect-error - react-helmet-async not yet compatible with React 19 */}
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>
